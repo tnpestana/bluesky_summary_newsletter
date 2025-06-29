@@ -8,6 +8,7 @@ from datetime import datetime
 from typing import List
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+import markdown
 
 logger = logging.getLogger(__name__)
 
@@ -34,19 +35,24 @@ class EmailSender:
             msg['To'] = ", ".join(recipient_emails)
             msg['Subject'] = f"{subject} - {datetime.now().strftime('%Y-%m-%d')}"
 
-            body = f"""
-Daily Bluesky Summary Report
-Generated on: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
-Total posts analyzed: {post_count}
-Monitored accounts: {', '.join(monitored_accounts)}
+            # Create email header
+            header = f"""# 🦋 Daily Bluesky Summary
 
-{summary}
+**Generated:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} UTC  
+**Posts analyzed:** {post_count}  
+**Monitored accounts:** {', '.join(monitored_accounts)}
 
 ---
-This summary was generated automatically by Bluesky Summary Newsletter.
-            """
+"""
 
-            msg.attach(MIMEText(body, 'plain'))
+            # Combine header with AI summary
+            full_markdown = header + summary + "\n\n---\n*This summary was generated automatically by Bluesky Summary Newsletter.*"
+            
+            # Convert markdown to HTML for better email rendering
+            html_body = markdown.markdown(full_markdown, extensions=['extra', 'codehilite'])
+            
+            # Send only HTML version to avoid duplication
+            msg.attach(MIMEText(html_body, 'html'))
 
             # Send email
             server = smtplib.SMTP(self.smtp_server, self.smtp_port)

@@ -26,6 +26,9 @@ class AISummarizer:
         elif provider == "groq":
             # Groq uses OpenAI-compatible API
             openai.api_key = os.getenv("GROQ_API_KEY")
+            # Ensure proper URL formatting for Groq
+            if base_url and not base_url.endswith('/'):
+                base_url = base_url + '/'
             openai.base_url = base_url
         elif provider == "anthropic":
             self.anthropic_client = Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
@@ -131,16 +134,27 @@ class AISummarizer:
                 for post in posts:
                     post_text += f"• {post['text']}\n"
         
-        prompt = f"""Please provide a concise summary of the key information, trends, and insights from these recent Bluesky posts. Focus on:
-1. Major announcements or news
-2. Industry trends or developments  
-3. Notable opinions or statements
-4. Any emerging themes
+        prompt = f"""Please provide a well-formatted summary of these recent Bluesky posts, optimized for email reading. 
 
-Here are the posts:
+FORMAT REQUIREMENTS:
+- Use clear section headers with ##
+- Use bullet points with - for easy scanning
+- Include emojis to make it visually appealing
+- Keep paragraphs short (2-3 sentences max)
+- Use **bold** for important terms or names
+- Add line breaks between sections for readability
+
+CONTENT FOCUS:
+- 📢 Major announcements or breaking news
+- 📈 Industry trends and developments  
+- 💭 Notable opinions and insights
+- 🔥 Trending topics and discussions
+- 🔗 Important connections between posts
+
+Here are the posts to summarize:
 {post_text}
 
-Please structure your summary with clear sections and bullet points for easy reading."""
+Please structure your response as an engaging newsletter that's easy to read in an email client."""
 
         try:
             if self.provider in ["openai", "groq"]:

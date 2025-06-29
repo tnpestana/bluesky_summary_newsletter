@@ -4,3 +4,4 @@ openai>=1.0.0
 anthropic>=0.3.0
 python-dotenv>=1.0.0
 atproto>=0.0.34
+markdown>=3.4.0
