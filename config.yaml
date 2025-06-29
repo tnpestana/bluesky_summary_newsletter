@@ -1,0 +1,32 @@
+# Bluesky Summary Newsletter Configuration
+
+# Bluesky API Configuration
+bluesky:
+  username: "${BLUESKY_USERNAME}"  # Your Bluesky username (e.g., user.bsky.social)
+  password: "${BLUESKY_PASSWORD}"  # Your Bluesky password or app password
+
+# Bluesky users to monitor (full handles like user.bsky.social)
+bluesky_users:
+  - "shamsbot.bsky.social"
+
+# AI Configuration
+ai:
+  provider: "ollama"  # or "openai" or "anthropic"
+  model: "llama2"  # Available models: llama2, mistral, codellama
+  base_url: "http://localhost:11434"  # Default Ollama URL
+
+# Email Configuration
+email:
+  smtp_server: "smtp.gmail.com"
+  smtp_port: 587
+  sender_email: "tnevespestana@gmail.com"
+  sender_password: "${EMAIL_SENDER_PASSWORD}"  # Set in .env file
+  recipient_emails:
+    - "tnpestana@hotmail.com"
+    - "goncalo.antunes@outlook.com"
+  subject: "Daily Bluesky Summary"
+
+# General Settings
+settings:
+  hours_lookback: 24  # How many hours back to fetch posts
+  max_posts_per_user: 50  # Maximum posts to fetch per user
