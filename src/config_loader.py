@@ -33,7 +33,15 @@ class ConfigLoader:
 
     def get_email_config(self):
         """Get email configuration."""
-        return self.config["email"]
+        email_config = self.config["email"].copy()
+        
+        # Handle comma-separated recipient emails
+        if isinstance(email_config["recipient_emails"], str):
+            email_config["recipient_emails"] = [
+                email.strip() for email in email_config["recipient_emails"].split(",")
+            ]
+        
+        return email_config
 
     def get_settings(self):
         """Get general settings."""

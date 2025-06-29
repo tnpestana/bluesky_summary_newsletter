@@ -54,14 +54,15 @@ python src/main.py
    - Add these secrets:
      - `BLUESKY_USERNAME`: your-username.bsky.social
      - `BLUESKY_PASSWORD`: your-bluesky-app-password
+     - `EMAIL_SENDER_EMAIL`: your-email@gmail.com
      - `EMAIL_SENDER_PASSWORD`: your-gmail-app-password
+     - `EMAIL_RECIPIENTS`: recipient1@example.com,recipient2@example.com
      - `GROQ_API_KEY`: your-groq-api-key
 
 3. **Configure the Newsletter:**
    - Edit `config.yaml` to set:
      - Bluesky users to monitor
-     - Your email addresses
-     - Email subject
+     - Email subject (sender/recipients are in environment variables)
 
 4. **Test the Workflow:**
    - Go to Actions tab → "Daily Bluesky Newsletter" → "Run workflow"
@@ -76,14 +77,10 @@ bluesky_users:
 ```
 
 ### Email Settings
-```yaml
-email:
-  sender_email: "your-email@gmail.com"
-  recipient_emails:
-    - "recipient1@example.com"
-    - "recipient2@example.com"
-  subject: "Daily Bluesky Summary"
-```
+Email configuration is handled via environment variables:
+- `EMAIL_SENDER_EMAIL`: Your Gmail address
+- `EMAIL_RECIPIENTS`: Comma-separated list of recipients
+- Subject is configured in `config.yaml`
 
 ### Schedule
 The newsletter runs daily at 9:00 AM UTC. To change:

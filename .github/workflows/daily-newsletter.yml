@@ -28,7 +28,9 @@ jobs:
       run: |
         echo "BLUESKY_USERNAME=${{ secrets.BLUESKY_USERNAME }}" >> .env
         echo "BLUESKY_PASSWORD=${{ secrets.BLUESKY_PASSWORD }}" >> .env
+        echo "EMAIL_SENDER_EMAIL=${{ secrets.EMAIL_SENDER_EMAIL }}" >> .env
         echo "EMAIL_SENDER_PASSWORD=${{ secrets.EMAIL_SENDER_PASSWORD }}" >> .env
+        echo "EMAIL_RECIPIENTS=${{ secrets.EMAIL_RECIPIENTS }}" >> .env
         echo "GROQ_API_KEY=${{ secrets.GROQ_API_KEY }}" >> .env
     
     - name: Run newsletter script

@@ -13,16 +13,15 @@ bluesky_users:
 ai:
   provider: "groq"  # or "openai" or "anthropic"
   model: "llama3-8b-8192"  # Available models: llama3-8b-8192, llama3-70b-4096, mixtral-8x7b-32768
-  base_url: "https://api.groq.com/openai/v1/"  # Groq API URL
+  base_url: "https://api.groq.com/openai/v1"  # Groq API URL
 
 # Email Configuration
 email:
   smtp_server: "smtp.gmail.com"
   smtp_port: 587
-  sender_email: "tnevespestana@gmail.com"
+  sender_email: "${EMAIL_SENDER_EMAIL}"  # Set in .env file
   sender_password: "${EMAIL_SENDER_PASSWORD}"  # Set in .env file
-  recipient_emails:
-    - "tnpestana@hotmail.com"
+  recipient_emails: "${EMAIL_RECIPIENTS}"  # Comma-separated list in .env file
   subject: "Daily Bluesky Summary"
 
 # General Settings
