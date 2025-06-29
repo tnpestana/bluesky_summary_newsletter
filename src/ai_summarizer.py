@@ -23,6 +23,10 @@ class AISummarizer:
         
         if provider == "openai":
             openai.api_key = os.getenv("OPENAI_API_KEY")
+        elif provider == "groq":
+            # Groq uses OpenAI-compatible API
+            openai.api_key = os.getenv("GROQ_API_KEY")
+            openai.base_url = base_url
         elif provider == "anthropic":
             self.anthropic_client = Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
         elif provider == "ollama":
@@ -139,7 +143,8 @@ Here are the posts:
 Please structure your summary with clear sections and bullet points for easy reading."""
 
         try:
-            if self.provider == "openai":
+            if self.provider in ["openai", "groq"]:
+                # Both OpenAI and Groq use the same API format
                 response = openai.chat.completions.create(
                     model=self.model,
                     messages=[

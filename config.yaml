@@ -11,9 +11,9 @@ bluesky_users:
 
 # AI Configuration
 ai:
-  provider: "ollama"  # or "openai" or "anthropic"
-  model: "llama2"  # Available models: llama2, mistral, codellama
-  base_url: "http://localhost:11434"  # Default Ollama URL
+  provider: "groq"  # or "openai" or "anthropic"
+  model: "llama3-8b-8192"  # Available models: llama3-8b-8192, llama3-70b-4096, mixtral-8x7b-32768
+  base_url: "https://api.groq.com/openai/v1/"  # Groq API URL
 
 # Email Configuration
 email:
@@ -23,7 +23,6 @@ email:
   sender_password: "${EMAIL_SENDER_PASSWORD}"  # Set in .env file
   recipient_emails:
     - "tnpestana@hotmail.com"
-    - "goncalo.antunes@outlook.com"
   subject: "Daily Bluesky Summary"
 
 # General Settings
