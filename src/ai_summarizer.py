@@ -138,23 +138,21 @@ class AISummarizer:
 
 FORMAT REQUIREMENTS:
 - Use clear section headers with ##
-- Use bullet points with - for easy scanning
-- Include emojis to make it visually appealing
-- Keep paragraphs short (2-3 sentences max)
-- Use **bold** for important terms or names
-- Add line breaks between sections for readability
+- Include emojis only on section headers
+- Keep paragraphs short and use **bold** for important terms or names
+- Do not withhold information, every trade/update should be reported
+- You can ommit sections if nothing fits, but avoiding creating new sections
+- Filter out any promotional content like ads and product placement
 
-CONTENT FOCUS:
-- 📢 Major announcements or breaking news
-- 📈 Industry trends and developments  
-- 💭 Notable opinions and insights
-- 🔥 Trending topics and discussions
-- 🔗 Important connections between posts
+REQUIRED STRUCTURE:
+- 📦 Trades, Signings and Extensions: this section will contain all the information about player movement, trade deals, new signings and contract extensions. It will mostly appear during the off-season and during trade windows.
+- 🏅 Performance Recap: this section will provide updates on player performances during games. It will mostly appear during the season.
+- 🗞️ League Updates: any update regarding the organizations, NBA general management and team franchise updates. 
 
 Here are the posts to summarize:
 {post_text}
 
-Please structure your response as an engaging newsletter that's easy to read in an email client."""
+Please structure your response as a newsletter that's easy to read in an email client."""
 
         try:
             if self.provider in ["openai", "groq"]:
