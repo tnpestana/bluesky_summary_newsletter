@@ -134,25 +134,38 @@ class AISummarizer:
                 for post in posts:
                     post_text += f"• {post['text']}\n"
         
-        prompt = f"""Please provide a well-formatted summary of these recent Bluesky posts, optimized for email reading. 
+        prompt = f"""You are a professional sports newsletter writer. Create a comprehensive summary of these Bluesky posts about NBA news, organized for easy email reading.
 
-FORMAT REQUIREMENTS:
-- Use clear section headers with ##
-- Include emojis only on section headers
-- Keep paragraphs short and use **bold** for important terms or names
-- Do not withhold information, every trade/update should be reported
-- You can ommit sections if nothing fits, but avoiding creating new sections
-- Filter out any promotional content like ads and product placement
+CONTENT GUIDELINES:
+- Extract ALL relevant information - no details should be omitted
+- Write complete sentences with specific details like contract terms, dollar amounts, years, team names
+- Write in active voice with professional tone
+- Filter out promotional content, ads, and off-topic posts
+- Group related information together logically
 
-REQUIRED STRUCTURE:
-- 📦 Trades, Signings and Extensions: this section will contain all the information about player movement, trade deals, new signings and contract extensions. It will mostly appear during the off-season and during trade windows.
-- 🏅 Performance Recap: this section will provide updates on player performances during games. It will mostly appear during the season.
-- 🗞️ League Updates: any update regarding the organizations, NBA general management and team franchise updates. 
+STRUCTURE REQUIREMENTS:
+Use EXACTLY these sections with ## headers and emojis:
 
-Here are the posts to summarize:
+## 📦 Trades, Signings and Extensions
+Use bullet points (•) for each trade, signing, or extension. Include all relevant details like contract terms, years, dollar amounts, and teams involved.
+
+## 🏅 Performance Recap  
+Use bullet points (•) for game performances, statistics, and player achievements. If no performance news is available, write: "• This section is typically used to report on player performances during games. However, there are no relevant posts from recent game updates provided."
+
+## 🗞️ League Updates
+Use bullet points (•) for organizational news, management changes, league announcements, broadcasting deals, and franchise updates.
+
+FORMATTING RULES:
+- Use bullet points (•) for each news item
+- Each bullet point should be a complete sentence with all relevant details
+- Include explanatory text for empty sections rather than omitting them
+- Maintain professional, informative tone
+- Write complete sentences with all relevant details
+
+POSTS TO SUMMARIZE:
 {post_text}
 
-Please structure your response as a newsletter that's easy to read in an email client."""
+Create a polished newsletter summary following this exact structure and formatting style."""
 
         try:
             if self.provider in ["openai", "groq"]:
