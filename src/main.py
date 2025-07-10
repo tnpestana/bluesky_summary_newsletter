@@ -33,7 +33,7 @@ class BlueskySummaryNewsletter:
         
         self.ai_summarizer = AISummarizer(
             ai_config["provider"],
-            ai_config["model"],
+            ai_config["models"],
             ai_config.get("base_url")
         )
         

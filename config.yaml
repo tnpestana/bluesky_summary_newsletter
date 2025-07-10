@@ -8,11 +8,16 @@ bluesky:
 # Bluesky users to monitor (full handles like user.bsky.social)
 bluesky_users:
   - "shamsbot.bsky.social"
+  - "passanthalbot.bsky.social"
 
 # AI Configuration
 ai:
   provider: "groq"  # or "openai" or "anthropic"
-  model: "llama-3.1-8b-instant"  # Available models: llama-3.1-8b-instant, llama-3.1-70b-versatile, llama3-groq-70b-8192-tool-use-preview
+  models:  # Models to try in order (best to worst)
+    - "llama-3.3-70b-versatile"     # Best for complex structured tasks
+    - "qwen-2.5-32b"               # Good for reasoning and structured outputs  
+    - "llama-3.1-70b-versatile"    # Good balance of performance and speed
+    - "llama-3.1-8b-instant"       # Fast but less capable (final fallback)
   base_url: "https://api.groq.com/openai/v1"  # Groq API URL
 
 # Email Configuration

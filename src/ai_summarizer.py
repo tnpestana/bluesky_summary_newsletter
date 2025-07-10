@@ -15,9 +15,9 @@ from anthropic import Anthropic
 logger = logging.getLogger(__name__)
 
 class AISummarizer:
-    def __init__(self, provider: str, model: str, base_url: str = None):
+    def __init__(self, provider: str, models: list, base_url: str = None):
         self.provider = provider
-        self.model = model
+        self.models = models if isinstance(models, list) else [models]
         self.base_url = base_url
         self.ollama_process = None
         
@@ -134,7 +134,7 @@ class AISummarizer:
                 for post in posts:
                     post_text += f"• {post['text']}\n"
         
-        prompt = f"""You are a professional sports newsletter writer. Create a comprehensive summary of these Bluesky posts about NBA news, organized for easy email reading.
+        prompt = f"""You are a professional sports newsletter writer. Create a comprehensive summary of these Bluesky posts, organized for easy email reading with separate NBA and MLB sections.
 
 CONTENT GUIDELINES:
 - Extract ALL relevant information - no details should be omitted
@@ -142,25 +142,45 @@ CONTENT GUIDELINES:
 - Write in active voice with professional tone
 - Filter out promotional content, ads, and off-topic posts
 - Group related information together logically
+- Separate NBA and MLB content clearly
 
 STRUCTURE REQUIREMENTS:
-Use EXACTLY these sections with ## headers and emojis:
+Create TWO main sections, each with their own subsections:
 
-## 📦 Trades, Signings and Extensions
-Use bullet points (•) for each trade, signing, or extension. Include all relevant details like contract terms, years, dollar amounts, and teams involved.
+## 🏀 NBA
 
-## 🏅 Performance Recap  
-Use bullet points (•) for game performances, statistics, and player achievements. If no performance news is available, write: "• This section is typically used to report on player performances during games. However, there are no relevant posts from recent game updates provided."
+### 📦 Trades, Signings and Extensions
+- Use bullet points (•) for each NBA trade, signing, or extension. 
+- Include all relevant details like contract terms, years, dollar amounts, and teams involved.
 
-## 🗞️ League Updates
-Use bullet points (•) for organizational news, management changes, league announcements, broadcasting deals, and franchise updates.
+### 🏅 Performance Recap  
+- Use bullet points (•) for NBA game performances, statistics, and player achievements.
+
+### 🗞️ League Updates
+- Use bullet points (•) for NBA organizational news, management changes, league announcements, broadcasting deals, and franchise updates.
+
+---
+
+## ⚾ MLB
+
+### 📦 Trades, Signings and Extensions
+- Use bullet points (•) for each MLB trade, signing, or extension. 
+- Include all relevant details like contract terms, years, dollar amounts, and teams involved.
+
+### 🏅 Performance Recap  
+- Use bullet points (•) for MLB game performances, statistics, and player achievements. 
+
+### 🗞️ League Updates
+- Use bullet points (•) for MLB organizational news, management changes, league announcements, broadcasting deals, and franchise updates.
 
 FORMATTING RULES:
 - Use bullet points (•) for each news item
 - Each bullet point should be a complete sentence with all relevant details
 - Include explanatory text for empty sections rather than omitting them
+- Use bold for teams and names
 - Maintain professional, informative tone
-- Write complete sentences with all relevant details
+- Skip entire main sections (NBA or MLB) if no relevant content exists
+- IMPORTANT: Include a horizontal line (---) between NBA and MLB sections for visual separation
 
 POSTS TO SUMMARIZE:
 {post_text}
@@ -169,20 +189,34 @@ Create a polished newsletter summary following this exact structure and formatti
 
         try:
             if self.provider in ["openai", "groq"]:
-                # Both OpenAI and Groq use the same API format
-                response = openai.chat.completions.create(
-                    model=self.model,
-                    messages=[
-                        {"role": "system", "content": "You are a helpful assistant that summarizes social media content."},
-                        {"role": "user", "content": prompt}
-                    ],
-                    max_tokens=1000
-                )
-                return response.choices[0].message.content
+                # Try models in order until one succeeds
+                last_error = None
+                for i, model_to_try in enumerate(self.models):
+                    try:
+                        logger.info(f"Trying model {i+1}/{len(self.models)}: {model_to_try}")
+                        response = openai.chat.completions.create(
+                            model=model_to_try,
+                            messages=[
+                                {"role": "system", "content": "You are a professional sports newsletter writer specializing in structured content creation."},
+                                {"role": "user", "content": prompt}
+                            ],
+                            max_tokens=2000  # Increased for longer structured content
+                        )
+                        logger.info(f"Successfully used model: {model_to_try}")
+                        return response.choices[0].message.content
+                    except Exception as e:
+                        last_error = e
+                        logger.warning(f"Model {model_to_try} failed: {str(e)}")
+                        if i == len(self.models) - 1:  # Last model in list
+                            logger.error("All models failed, re-raising last error")
+                            raise last_error
+                        continue  # Try next model
             
             elif self.provider == "anthropic":
+                # For Anthropic, use the first model in the list
+                model_to_use = self.models[0] if self.models else "claude-3-sonnet-20240229"
                 response = self.anthropic_client.messages.create(
-                    model=self.model,
+                    model=model_to_use,
                     max_tokens=1000,
                     messages=[
                         {"role": "user", "content": prompt}
@@ -191,8 +225,10 @@ Create a polished newsletter summary following this exact structure and formatti
                 return response.content[0].text
             
             elif self.provider == "ollama":
+                # For Ollama, use the first model in the list
+                model_to_use = self.models[0] if self.models else "llama3"
                 payload = {
-                    "model": self.model,
+                    "model": model_to_use,
                     "prompt": prompt,
                     "stream": False
                 }
