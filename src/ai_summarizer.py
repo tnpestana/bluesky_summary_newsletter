@@ -134,58 +134,20 @@ class AISummarizer:
                 for post in posts:
                     post_text += f"• {post['text']}\n"
         
-        prompt = f"""You are a professional sports newsletter writer. Create a comprehensive summary of these Bluesky posts, organized for easy email reading with separate NBA and MLB sections.
-
-CONTENT GUIDELINES:
-- Extract ALL relevant information - no details should be omitted
-- Write complete sentences with specific details like contract terms, dollar amounts, years, team names
-- Write in active voice with professional tone
-- Filter out promotional content, ads, and off-topic posts
-- Group related information together logically
-- Separate NBA and MLB content clearly
-
-STRUCTURE REQUIREMENTS:
-Create TWO main sections, each with their own subsections:
-
-## 🏀 NBA
-
-### 📦 Trades, Signings and Extensions
-- Use bullet points (•) for each NBA trade, signing, or extension. 
-- Include all relevant details like contract terms, years, dollar amounts, and teams involved.
-
-### 🏅 Performance Recap  
-- Use bullet points (•) for NBA game performances, statistics, and player achievements.
-
-### 🗞️ League Updates
-- Use bullet points (•) for NBA organizational news, management changes, league announcements, broadcasting deals, and franchise updates.
-
----
-
-## ⚾ MLB
-
-### 📦 Trades, Signings and Extensions
-- Use bullet points (•) for each MLB trade, signing, or extension. 
-- Include all relevant details like contract terms, years, dollar amounts, and teams involved.
-
-### 🏅 Performance Recap  
-- Use bullet points (•) for MLB game performances, statistics, and player achievements. 
-
-### 🗞️ League Updates
-- Use bullet points (•) for MLB organizational news, management changes, league announcements, broadcasting deals, and franchise updates.
-
-FORMATTING RULES:
-- Use bullet points (•) for each news item
-- Each bullet point should be a complete sentence with all relevant details
-- Include explanatory text for empty sections rather than omitting them
-- Use bold for teams and names
-- Maintain professional, informative tone
-- Skip entire main sections (NBA or MLB) if no relevant content exists
-- IMPORTANT: Include a horizontal line (---) between NBA and MLB sections for visual separation
-
-POSTS TO SUMMARIZE:
-{post_text}
-
-Create a polished newsletter summary following this exact structure and formatting style."""
+        # Load prompt template from file
+        try:
+            with open("prompt_template.txt", "r", encoding="utf-8") as f:
+                prompt_template = f.read()
+        except FileNotFoundError:
+            logger.warning("prompt_template.txt not found, using default prompt")
+            prompt_template = """You are a professional sports newsletter writer. Create a comprehensive summary of these Bluesky posts.
+            
+            POSTS TO SUMMARIZE:
+            {post_text}
+            
+            Create a polished newsletter summary."""
+        
+        prompt = prompt_template.format(post_text=post_text)
 
         try:
             if self.provider in ["openai", "groq"]:

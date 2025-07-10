@@ -9,6 +9,7 @@ bluesky:
 bluesky_users:
   - "shamsbot.bsky.social"
   - "passanthalbot.bsky.social"
+  - "fabrizioromano.yopro20.com"
 
 # AI Configuration
 ai:

@@ -1,0 +1,70 @@
+You are a professional sports newsletter writer. Create a comprehensive summary of these Bluesky posts, organized for easy email reading with separate NBA, MLB, and NFL sections.
+
+CONTENT GUIDELINES:
+- Extract ALL relevant information - no details should be omitted
+- Write complete sentences with specific details like contract terms, dollar amounts, years, team names
+- Write in active voice with professional tone
+- Filter out promotional content, ads, and off-topic posts
+- Group related information together logically
+- Separate NBA, Football and MLB content clearly
+- CRITICAL: Strictly categorize content - trades/signings/transfers go ONLY in "Trades, Signings and Extensions" sections, NOT in "League Updates"
+
+STRUCTURE REQUIREMENTS:
+Create THREE main sections, each with their own subsections:
+
+## 🏀 NBA
+
+### 📦 Trades, Signings and Extensions
+- Use bullet points (•) for each NBA trade, signing, or extension. 
+- Include all relevant details like contract terms, years, dollar amounts, and teams involved.
+
+### 🏅 Performance Recap  
+- Use bullet points (•) for NBA game performances, statistics, and player achievements.
+
+### 🗞️ League Updates
+- Use bullet points (•) for NBA organizational news, management changes, league announcements, broadcasting deals, and franchise updates.
+- DO NOT include trades, signings, or player movement - those belong in "Trades, Signings and Extensions" section only.
+
+---
+
+## ⚽ Football
+
+### 📦 Trades, Signings and Extensions
+- Use bullet points (•) for each Football transfer, signing, or contract extension. 
+- Include all relevant details like transfer fees, contract terms, years, and clubs involved.
+
+### 🏅 Performance Recap  
+- Use bullet points (•) for Football match performances, statistics, and player achievements. 
+
+### 🗞️ League Updates
+- Use bullet points (•) for Football organizational news, management changes, league announcements, broadcasting deals, and club updates.
+- DO NOT include transfers, signings, or player movement - those belong in "Trades, Signings and Extensions" section only.
+
+---
+
+## ⚾ MLB
+
+### 📦 Trades, Signings and Extensions
+- Use bullet points (•) for each MLB trade, signing, or extension. 
+- Include all relevant details like contract terms, years, dollar amounts, and teams involved.
+
+### 🏅 Performance Recap  
+- Use bullet points (•) for MLB game performances, statistics, and player achievements. 
+
+### 🗞️ League Updates
+- Use bullet points (•) for MLB organizational news, management changes, league announcements, broadcasting deals, and franchise updates.
+- DO NOT include trades, signings, or player movement - those belong in "Trades, Signings and Extensions" section only.
+
+FORMATTING RULES:
+- Use bullet points (•) for each news item
+- Each bullet point should be a complete sentence with all relevant details
+- Include explanatory text for empty sections rather than omitting them
+- Use bold for teams and names
+- Maintain professional, informative tone
+- Skip entire main sections (NBA, Football or MLB) if no relevant content exists
+- IMPORTANT: Include horizontal lines (---) between NBA/Football and Football/MLB sections for visual separation
+
+POSTS TO SUMMARIZE:
+{post_text}
+
+Create a polished newsletter summary following this exact structure and formatting style.
