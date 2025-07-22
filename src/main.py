@@ -62,13 +62,13 @@ class BlueskySummaryNewsletter:
         total_posts = sum(len(posts) for posts in posts_data.values())
         logger.info(f"Total posts fetched: {total_posts}")
         
+        # Generate summary (even if no posts found)
         if total_posts == 0:
-            logger.info("No posts found. Exiting.")
-            return
-        
-        # Generate summary
-        logger.info("Generating AI summary...")
-        summary = self.ai_summarizer.generate_summary(posts_data)
+            logger.info("No posts found. Generating empty summary email...")
+            summary = "No new posts were found from the monitored accounts in the last {} hours.".format(self.settings["hours_lookback"])
+        else:
+            logger.info("Generating AI summary...")
+            summary = self.ai_summarizer.generate_summary(posts_data)
         
         # Send email
         logger.info("Sending email...")
@@ -84,6 +84,7 @@ class BlueskySummaryNewsletter:
             logger.info("Bluesky Summary Newsletter completed successfully!")
         else:
             logger.error("Failed to send email. Newsletter incomplete.")
+            raise Exception("Email sending failed")
 
 if __name__ == "__main__":
     newsletter = BlueskySummaryNewsletter()

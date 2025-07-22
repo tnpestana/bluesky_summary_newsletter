@@ -34,7 +34,11 @@ jobs:
         echo "GROQ_API_KEY=${{ secrets.GROQ_API_KEY }}" >> .env
     
     - name: Run newsletter script
-      run: python src/main.py
+      run: |
+        set -e
+        echo "Starting newsletter generation..."
+        python src/main.py
+        echo "Newsletter script completed successfully"
     
     - name: Clean up
       run: rm -f .env
